@@ -200,7 +200,9 @@ git clone https://github.com/usuario/mi-repo.git
 
 ## 4. Ejercicios prácticos
 
-### Ejercicio 1 — Calentamiento individual (`init`, `add`, `commit`, `status`, `log`)
+> **Nota de orden:** la conexión SSH a GitHub se configura en clase, paso a paso con el profesor. Mientras tanto, los ejercicios **1, 4 y 5** (y el "modo trampa" de la sección 5) son **100% locales** — no necesitan GitHub ni ningún tipo de autenticación, así que se pueden hacer desde ya. Los ejercicios **2, 3 y 6** sí necesitan el repo conectado a GitHub — se retoman después de la sesión de SSH. El historial que construyan hoy en local no se pierde: cuando conecten el remoto más adelante, un solo `git push -u origin main` sube todos esos commits tal cual quedaron.
+
+### Ejercicio 1 — Calentamiento individual (`init`, `add`, `commit`, `status`, `log`) · Sin GitHub
 
 1. Crea una carpeta nueva y entra en ella.
 2. `git init`.
@@ -211,14 +213,14 @@ git clone https://github.com/usuario/mi-repo.git
 7. Agrega una segunda línea al archivo, repite `add` + `commit` con otro mensaje.
 8. `git log --oneline` — deberían ver dos commits.
 
-### Ejercicio 2 — Conexión a GitHub, en parejas
+### Ejercicio 2 — Conexión a GitHub, en parejas · Requiere GitHub (SSH ya configurado)
 
 1. Cada estudiante crea un repositorio en GitHub: **una persona lo crea vacío**, la **otra lo crea con README**.
 2. Cada quien conecta su repo local (del ejercicio 1, o uno nuevo) siguiendo el escenario que le tocó (sección 3).
 3. Verifiquen con `git remote -v` que apuntan al repo correcto.
 4. Cada estudiante agrega a su compañero como colaborador en GitHub (Settings → Collaborators) para el siguiente ejercicio.
 
-### Ejercicio 3 — Historia colaborativa ("cadáver exquisito"), grupos de 3-4
+### Ejercicio 3 — Historia colaborativa ("cadáver exquisito"), grupos de 3-4 · Requiere GitHub
 
 Objetivo: vivir el ciclo `pull → add → commit → push → pull...` en equipo.
 
@@ -228,9 +230,9 @@ Objetivo: vivir el ciclo `pull → add → commit → push → pull...` en equip
 4. Si alguien hace push sin haber hecho pull primero y el remoto ya cambió, Git va a rechazar el push — ese error es intencional: discutan por qué pasó y resuélvanlo con `git pull` antes de reintentar.
 5. Al final, revisen `git log --oneline` completo: deberían ver un commit por cada aporte, con nombre de autor.
 
-### Ejercicio 4 — Triqui con historial de versiones, en parejas
+### Ejercicio 4 — Triqui con historial de versiones, en parejas · Sin GitHub (mismo computador)
 
-Objetivo: usar `push`/`pull` como turnos de un juego y `log` como "replay" de la partida.
+Objetivo: usar `add`/`commit` como turnos de un juego y `log` como "replay" de la partida — sin necesitar todavía push/pull ni GitHub.
 
 1. Un archivo `tablero.txt` representa el triqui, por ejemplo:
    ```
@@ -238,11 +240,13 @@ Objetivo: usar `push`/`pull` como turnos de un juego y `log` como "replay" de la
    _ _ _
    _ _ _
    ```
-2. Uno de los dos crea el repo, agrega al otro como colaborador, y sube el tablero vacío.
-3. Cada turno: el jugador hace `git pull`, edita el archivo marcando su jugada (X u O), `git add`, `git commit -m "Jugada 1: X en (1,1)"`, `git push`. El rival espera, hace `pull` y ve la jugada antes de responder.
-4. Al terminar la partida, corran `git log --oneline` — el historial completo es literalmente el replay de la partida, jugada por jugada.
+2. Uno de los dos crea la carpeta, hace `git init`, crea el archivo y hace el primer commit del tablero vacío.
+3. Se turnan el teclado en la misma máquina: cada jugador edita el archivo marcando su jugada (X u O), `git add tablero.txt`, `git commit -m "Jugada 1: X en (1,1)"`. El rival espera su turno, revisa el tablero (ya está ahí mismo, en el archivo) y responde con su propio commit.
+4. Al terminar la partida, corran `git log --oneline` — el historial completo es literalmente el replay de la partida, jugada por jugada, sin haber tocado GitHub en ningún momento.
 
-### Ejercicio 5 — Conflicto de merge provocado, en parejas o grupos
+> **Para más adelante:** cuando tengan SSH configurado, pueden subir este mismo repositorio sin perder nada — crean el repo vacío en GitHub, y corren `git remote add origin git@github.com:usuario/repo.git` seguido de `git push -u origin main`. Todos los commits de la partida quedan ahí, con sus mensajes y fechas originales. Desde ese punto, una revancha ya sí puede jugarse a distancia con `push`/`pull` como en la idea original.
+
+### Ejercicio 5 — Conflicto de merge provocado, en parejas o grupos · Sin GitHub
 
 Objetivo: forzar un conflicto real de `merge` y aprender a resolverlo (no basta con la definición).
 
@@ -261,7 +265,7 @@ Objetivo: forzar un conflicto real de `merge` y aprender a resolverlo (no basta 
 6. Editan el archivo a mano dejando el resultado que quieran (borrando las marcas `<<<<<<<`, `=======`, `>>>>>>>`), hacen `git add` sobre el archivo resuelto, y `git commit` para cerrar el merge.
 7. Discusión de cierre: ¿por qué Git no pudo decidir solo? ¿Qué hubiera pasado si los cambios eran en líneas distintas del archivo?
 
-### Ejercicio 6 (opcional, grupos grandes) — Galería en Pull Request
+### Ejercicio 6 (opcional, grupos grandes) — Galería en Pull Request · Requiere GitHub
 
 1. Cada grupo trabaja en su propia rama agregando algo al proyecto común (arte ASCII, una entrada a un glosario, lo que aplique al curso).
 2. Suben su rama a GitHub (`git push -u origin nombre-rama`) y abren un **Pull Request** hacia `main`.
@@ -272,7 +276,7 @@ Objetivo: forzar un conflicto real de `merge` y aprender a resolverlo (no basta 
 
 ## 5. "Modo trampa" — el ejercicio secreto con `checkout`
 
-Este ejercicio se hace **sobre el tablero del triqui** (ejercicio 4) o sobre la historia colaborativa (ejercicio 3), después de tener varios commits en el historial.
+Este ejercicio se hace **sobre el tablero del triqui** (ejercicio 4, versión local) o sobre la historia colaborativa (ejercicio 3), después de tener varios commits en el historial. También es 100% local — `checkout` a un commit anterior no toca GitHub para nada.
 
 1. Un estudiante corre `git log --oneline` y copia el hash de una jugada anterior (por ejemplo, 3 jugadas atrás).
 2. Hace `git checkout <hash>`. Git le va a avisar algo como:
